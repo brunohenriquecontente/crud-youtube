@@ -1,5 +1,6 @@
 package br.com.brunocontente.crud.entity;
 
+import br.com.brunocontente.crud.dto.ProdutoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Singular;
@@ -18,4 +19,12 @@ public class Produto {
 
     @Column(name="descricao")
     private String descricao;
+
+
+    public ProdutoDTO toDTO(){
+        return new ProdutoDTO(
+                this.id,
+                this.nome,
+                this.descricao);
+    }
 }
