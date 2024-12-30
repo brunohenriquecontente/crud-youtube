@@ -4,6 +4,7 @@ import br.com.brunocontente.crud.dto.ProdutoDTO;
 import br.com.brunocontente.crud.entity.Produto;
 import br.com.brunocontente.crud.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,6 +40,24 @@ public class ProdutoService {
         produto.setNome(produtoDTO.nome());
          produto = produtoRepository.save(produto);
         return produto.toDTO();
+
+    }
+
+    public Page<ProdutoDTO> buscarTodosProdutos(ProdutoDTO produtoDTO, Integer page, Integer size, String sort, String orderBy){
+        Sort.Direction direction = "desc".equalsIgnoreCase(sort) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, orderBy));
+        Produto produto = new Produto();
+
+        BeanUtils.copyProperties(produtoDTO, produto);
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                         .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Produto> produtoExample = Example.of(produto, matcher);
+        Page<Produto> produtos = produtoRepository.findAll(produtoExample, pageable);
+
+        return produtos.map(Produto::toDTO);
 
     }
 }
