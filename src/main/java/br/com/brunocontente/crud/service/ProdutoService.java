@@ -36,9 +36,8 @@ public class ProdutoService {
 
         Produto produto = produtoRepository.findById(id).get();
         //@TODO Criar Exceção para produto não existente.
-        produto.setDescricao(produtoDTO.descricao());
-        produto.setNome(produtoDTO.nome());
-         produto = produtoRepository.save(produto);
+        produto = ProdutoMapper.INSTANCE.updateProdutoFromDTO(produtoDTO, produto);
+        produto = produtoRepository.save(produto);
         return ProdutoMapper.INSTANCE.toDTO(produto);
 
     }
