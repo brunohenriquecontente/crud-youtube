@@ -28,3 +28,4 @@ INSERT INTO produto (id, nome, descricao) VALUES (27, 'Impressora HP DeskJet 277
 INSERT INTO produto (id, nome, descricao) VALUES (28, 'Apontador Elétrico Staedtler', 'Apontador automático para lápis e cores.');
 INSERT INTO produto (id, nome, descricao) VALUES (29, 'Patinete Elétrico Xiaomi', 'Veículo elétrico portátil com alta autonomia.');
 INSERT INTO produto (id, nome, descricao) VALUES (30, 'Mochila Samsonite Tectonic', 'Mochila ergonômica com compartimentos para laptop.');
+ALTER SEQUENCE produto_seq RESTART WITH 31;

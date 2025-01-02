@@ -2,6 +2,7 @@ package br.com.brunocontente.crud.service;
 
 import br.com.brunocontente.crud.dto.ProdutoDTO;
 import br.com.brunocontente.crud.entity.Produto;
+import br.com.brunocontente.crud.mapper.ProdutoMapper;
 import br.com.brunocontente.crud.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
@@ -17,10 +18,9 @@ public class ProdutoService {
     }
 
     public ProdutoDTO salvarProduto(ProdutoDTO produtoDTO) {
-        Produto produto = new Produto();
-        BeanUtils.copyProperties(produtoDTO, produto);
+        Produto produto = ProdutoMapper.INSTANCE.toEntity(produtoDTO);
         produto = produtoRepository.save(produto);
-        return produto.toDTO();
+        return ProdutoMapper.INSTANCE.toDTO(produto);
     }
 
     public void deletarPorId(Integer id) {
@@ -29,7 +29,7 @@ public class ProdutoService {
 
     public ProdutoDTO buscarProdutoPorId(Integer id){
         Produto produto = produtoRepository.findById(id).get();
-        return produto.toDTO();
+        return ProdutoMapper.INSTANCE.toDTO(produto);
     }
 
     public ProdutoDTO atualizarProdutoPorId(Integer id, ProdutoDTO produtoDTO){
@@ -39,7 +39,7 @@ public class ProdutoService {
         produto.setDescricao(produtoDTO.descricao());
         produto.setNome(produtoDTO.nome());
          produto = produtoRepository.save(produto);
-        return produto.toDTO();
+        return ProdutoMapper.INSTANCE.toDTO(produto);
 
     }
 
@@ -57,7 +57,7 @@ public class ProdutoService {
         Example<Produto> produtoExample = Example.of(produto, matcher);
         Page<Produto> produtos = produtoRepository.findAll(produtoExample, pageable);
 
-        return produtos.map(Produto::toDTO);
+        return produtos.map(ProdutoMapper.INSTANCE::toDTO);
 
     }
 }

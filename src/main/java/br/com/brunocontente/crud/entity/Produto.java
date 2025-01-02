@@ -1,9 +1,7 @@
 package br.com.brunocontente.crud.entity;
 
-import br.com.brunocontente.crud.dto.ProdutoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Singular;
 
 @Entity
 @Table
@@ -11,7 +9,8 @@ import lombok.Singular;
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "produto_seq")
+    @SequenceGenerator(name = "produto_seq", sequenceName = "produto_seq", allocationSize = 1)
     private Integer id;
 
     @Column(name = "nome")
@@ -20,11 +19,4 @@ public class Produto {
     @Column(name="descricao")
     private String descricao;
 
-
-    public ProdutoDTO toDTO(){
-        return new ProdutoDTO(
-                this.id,
-                this.nome,
-                this.descricao);
-    }
 }
