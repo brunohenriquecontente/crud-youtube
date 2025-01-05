@@ -2,6 +2,7 @@ package br.com.brunocontente.crud.service;
 
 import br.com.brunocontente.crud.dto.ProdutoDTO;
 import br.com.brunocontente.crud.entity.Produto;
+import br.com.brunocontente.crud.exception.ProdutoNotFoundException;
 import br.com.brunocontente.crud.mapper.ProdutoMapper;
 import br.com.brunocontente.crud.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
@@ -27,15 +28,13 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-    public ProdutoDTO buscarProdutoPorId(Integer id){
-        Produto produto = produtoRepository.findById(id).get();
+    public ProdutoDTO buscarProdutoPorId(Integer id) throws ProdutoNotFoundException {
+        Produto produto = produtoRepository.findById(id).orElseThrow(()-> new ProdutoNotFoundException("Produto com id " + id + " não encontrado."));
         return ProdutoMapper.INSTANCE.toDTO(produto);
     }
 
-    public ProdutoDTO atualizarProdutoPorId(Integer id, ProdutoDTO produtoDTO){
-
-        Produto produto = produtoRepository.findById(id).get();
-        //@TODO Criar Exceção para produto não existente.
+    public ProdutoDTO atualizarProdutoPorId(Integer id, ProdutoDTO produtoDTO) throws ProdutoNotFoundException {
+        Produto produto = produtoRepository.findById(id).orElseThrow(()-> new ProdutoNotFoundException("Produto com id " + id + " não encontrado."));
         produto = ProdutoMapper.INSTANCE.updateProdutoFromDTO(produtoDTO, produto);
         produto = produtoRepository.save(produto);
         return ProdutoMapper.INSTANCE.toDTO(produto);

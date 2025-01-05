@@ -1,7 +1,7 @@
 package br.com.brunocontente.crud.controller;
 
 import br.com.brunocontente.crud.dto.ProdutoDTO;
-import br.com.brunocontente.crud.entity.Produto;
+import br.com.brunocontente.crud.exception.ProdutoNotFoundException;
 import br.com.brunocontente.crud.service.ProdutoService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class ProdutoController {
     }
 
     @GetMapping(value = "{id}")
-    public ProdutoDTO buscarProdutoPorId(@PathVariable Integer id){
+    public ProdutoDTO buscarProdutoPorId(@PathVariable Integer id) throws ProdutoNotFoundException {
         return produtoService.buscarProdutoPorId(id);
     }
 
@@ -32,7 +32,7 @@ public class ProdutoController {
     }
 
     @PutMapping(value = "{id}")
-    public ProdutoDTO atualizarProduto(@RequestBody ProdutoDTO produtoDTO, @PathVariable Integer id){
+    public ProdutoDTO atualizarProduto(@RequestBody ProdutoDTO produtoDTO, @PathVariable Integer id) throws ProdutoNotFoundException {
         return produtoService.atualizarProdutoPorId(id, produtoDTO);
     }
 
